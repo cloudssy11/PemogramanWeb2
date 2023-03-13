@@ -59,7 +59,7 @@
         <div class="col-8">
           <select id="program_studi" name="program_studi" class="custom-select" required="required">
           <?php foreach($program_studi as $key => $value){ ?>
-          <option value="<?= $key; ?>"><?= $value; ?></option>
+          <option value="<?= $value; ?>"><?= $value; ?></option>
           <?php } ?>
           </select>
         </div>
@@ -67,7 +67,7 @@
         <div class="form-group row">
             <label class="col-4">Skill Programming</label> 
         <div class="col-8">
-            <?php foreach($skills as $key => $value){ ?>
+            <?php foreach($skills as $key){ ?>
         <div class="custom-control custom-checkbox custom-control-inline">
                 <input name="skill[]" id="<?= $key; ?>" type="checkbox" class="custom-control-input" value="<?= $key; ?>"> 
                 <label for="<?= $key; ?>" class="custom-control-label"><?= $key; ?></label>
@@ -85,11 +85,13 @@
         <tr class="table-success text-uppercase">
             <th>nim</th>
             <th>nama</th>
-            <th>emai</th>
+            <th>email</th>
             <th>jenis kelamin</th>
             <th>domisili</th>
             <th>program studi </th>
             <th>skill </th>
+            <th>skor</th>
+            <th>predikat</th>
         </tr>
         <?php 
             $nim = $_POST['nim'];
@@ -99,7 +101,41 @@
             $domisili = $_POST['domisili'];
             $program_studi = $_POST['program_studi'];
             $skill_user = $_POST['skill'];
-
+            $skor = 0;
+            
+                    // loop melalui setiap item
+                    foreach($skill_user as $skill) {
+                        // cek apakah checkbox terkait telah dicentang
+                        if($skill == 'HTML') {
+                            // tambahkan nilai item ke total
+                            $skor = $skor + 10;
+                        }elseif($skill == 'CSS') {
+                            $skor = $skor + 10;
+                        }elseif($skill == 'JavaScript') {
+                            $skor = $skor + 20;
+                        }elseif($skill == 'PHP') {
+                            $skor = $skor + 30;
+                        }elseif($skill == 'Python') {
+                            $skor = $skor + 30;
+                        }
+                    }
+            
+            // predikat
+            if ($skor >= 90 && $skor < 100) {
+                $predikat = "Sangat Ahli";
+            }elseif($skor >= 75 && $skor < 90) {
+                $predikat = "Ahli";
+            }elseif($skor >= 50 && $skor < 75) {
+                $predikat = "Biasa";
+            }elseif($skor >= 35 && $skor < 50) {
+                $predikat = "Kurang";
+            }else{
+                $predikat = "Kurang Belajar";
+            }
+            
+            
+            
+            
         ?>
         <tr>
             <td><?= $nim; ?></td>
@@ -112,6 +148,18 @@
                 echo $skill . " ";
             } ?>
             </td>
+            <td>
+                <?php 
+                if(isset($_POST["submit"])){
+                    echo $skor;
+                } 
+                ?>
+            </td>
+            <td><?php 
+                if(isset($_POST["submit"])){
+                    echo $predikat;
+                } 
+                ?></td>
         </tr>
         </container>
     </body>
